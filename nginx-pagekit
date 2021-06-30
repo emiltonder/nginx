@@ -1,0 +1,61 @@
+server {
+
+    # SSL configuration
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    ssl_certificate  /etc/nginx/ssl/site-no-cert.pem;
+    ssl_certificate_key  /etc/nginx/ssl/site-no-key.pem;
+    root /var/www/folder/public/;
+    index  index.php index.html;
+    server_name www.sunlounge.no sunlounge.no;
+
+
+  # Leverage browser caching of media files for 30 days
+  location ~* \.(?:ico|css|js|gif|jpe?g|png|ttf|woff)$ {
+    access_log off;
+    expires 30d;
+    add_header Pragma public;
+    add_header Cache-Control "public, mustrevalidate, proxy-revalidate";
+  }
+
+
+
+  # PHP setup with query string support
+  location / {
+    try_files $uri $uri/ /index.php?$args;
+  }
+
+
+  # Deny access to sensitive folders
+  location ~* /(packages|storage|tmp)/.*$ { 
+    return 403; 
+  }
+
+
+  # Deny access to files with the following extensions
+  location ~* \.(db|json|lock|dist|md)$ { 
+      return 403;
+  }
+    # Leverage browser caching of media files for 30 days
+  #location ~* \.(?:ico|css|js|gif|jpe?g|png|ttf|woff)$ {
+  #  access_log off;
+  #  expires 30d;
+  #  add_header Pragma public;
+  #  add_header Cache-Control "public, mustrevalidate, proxy-revalidate";
+  #}
+
+
+# Uncomment the lines below depending on the PHP version you are using.
+
+  # PHP-FPM settings for PHP 7
+  
+  location ~ \.php$ {
+    try_files $uri =404;
+    fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+    fastcgi_param  HTTP_MOD_REWRITE  On;
+  }
+
+}
