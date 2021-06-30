@@ -7,7 +7,7 @@ server {
     ssl_certificate_key  /etc/nginx/ssl/site-no-key.pem;
     root /var/www/folder/public/;
     index  index.php index.html;
-    server_name www.sunlounge.no sunlounge.no;
+    server_name www.site.no site.no;
 
 
   # Leverage browser caching of media files for 30 days
