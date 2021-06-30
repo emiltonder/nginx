@@ -36,13 +36,13 @@ server {
   location ~* \.(db|json|lock|dist|md)$ { 
       return 403;
   }
-    # Leverage browser caching of media files for 30 days
-  #location ~* \.(?:ico|css|js|gif|jpe?g|png|ttf|woff)$ {
-  #  access_log off;
-  #  expires 30d;
-  #  add_header Pragma public;
-  #  add_header Cache-Control "public, mustrevalidate, proxy-revalidate";
-  #}
+     Leverage browser caching of media files for 30 days
+  location ~* \.(?:ico|css|js|gif|jpe?g|png|ttf|woff)$ {
+    access_log off;
+    expires 30d;
+    add_header Pragma public;
+    add_header Cache-Control "public, mustrevalidate, proxy-revalidate";
+  }
 
 
 # Uncomment the lines below depending on the PHP version you are using.
